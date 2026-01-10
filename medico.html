@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Médico - ABCD Médica</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --bg-body: #f1f5f9;
+            --text-main: #1e293b;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .doctor-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .patient-list {
+            margin-top: 20px;
+        }
+
+        .patient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .patient-info h4 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .patient-info p {
+            margin: 5px 0 0;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .btn-call {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-call:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .badge-paid {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo"><strong>ABCD <span>Médica</span></strong> | Portal Médico</div>
+            <div class="user" id="doctor-name">Dr. Especialista</div>
+            <button onclick="logoutDoctor()"
+                style="background: none; border: 1px solid #cbd5e1; padding: 5px 15px; border-radius: 8px; cursor: pointer; font-size: 0.8rem;">Cerrar
+                Sesión</button>
+        </header>
+
+        <script>
+            // Verificación de Sesión Médica
+            const doctorData = JSON.parse(localStorage.getItem('doctor_user'));
+            if (!doctorData || doctorData.role !== 'doctor') {
+                window.location.href = 'login-medico.html';
+            } else {
+                document.getElementById('doctor-name').innerText = doctorData.name;
+            }
+
+            function logoutDoctor() {
+                localStorage.removeItem('doctor_user');
+                window.location.href = 'login-medico.html';
+            }
+        </script>
+
+        <div class="doctor-card">
+            <h3>Pacientes por Atender</h3>
+            <p>Aquí aparecen los pacientes que ya han completado su pago y están en espera de videollamada.</p>
+
+            <div class="patient-list" id="consultation-list">
+                <p style="text-align: center; color: #94a3b8;">Buscando consultas pagadas...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/db.js?v=1.1"></script>
+    <script>
+        async function refreshConsultations() {
+            const list = document.getElementById('consultation-list');
+            try {
+                const consultations = await ABCD_DB.getPaidConsultations();
+
+                if (consultations.error) {
+                    list.innerHTML = `<p style="color: #ef4444; background: #fee2e2; padding: 15px; border-radius: 10px; border: 1px solid #fecaca;">
+                        <strong>Error de Base de Datos:</strong><br>${consultations.error}
+                    </p>`;
+                    return;
+                }
+
+                if (consultations.length === 0) {
+                    list.innerHTML = '<p style="text-align: center; color: #94a3b8;">No hay pacientes en espera en este momento.</p>';
+                    return;
+                }
+
+                list.innerHTML = consultations.map(c => `
+                    <div class="patient-item">
+                        <div class="patient-info">
+                            <span class="badge-paid">PAGO CONFIRMADO</span>
+                            <h4>${c.patient_name}</h4>
+                            <p>Síntomas: ${c.symptoms ? c.symptoms.substring(0, 80) + '...' : 'No especificado'}</p>
+                            <small>Fecha: ${new Date(c.date).toLocaleString()}</small>
+                        </div>
+                        <a href="videoconsulta.html?recordId=${c.id}&role=doctor" class="btn-call">Entrar a Consulta</a>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+                list.innerHTML = `<p style="color: #ef4444; background: #fee2e2; padding: 15px; border-radius: 10px; border: 1px solid #fecaca;">
+                    <strong>Error de Conexión:</strong><br>
+                    No se pudo contactar con el servidor PHP. Asegúrate de estar usando un servidor local (XAMPP) y que la URL sea correcta.
+                    <br><small>${e.message}</small>
+                </p>`;
+            }
+        }
+
+        // Refrescar cada 10 segundos
+        refreshConsultations();
+        setInterval(refreshConsultations, 10000);
+    </script>
+</body>
+
+</html>

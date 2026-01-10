@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Seguro - ABCD Médica</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981;
+            --bg-body: #f8fafc;
+            --text-main: #334155;
+            --card-bg: #ffffff;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --text-main: #f1f5f9;
+            --card-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .payment-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .summary {
+            background: var(--bg-body);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .total {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: var(--bg-body);
+            color: var(--text-main);
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .secure-badge {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-card">
+        <div class="header">
+            <h2>Pago Seguro</h2>
+            <p>Finaliza tu solicitud para conectar con el médico.</p>
+        </div>
+
+        <div class="summary">
+            <div class="summary-row">
+                <span>Consulta Médica Especializada</span>
+                <span>$90.00 MXN</span>
+            </div>
+            <div class="summary-row">
+                <span>Gestión Digital</span>
+                <span>$10.00 MXN</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total a pagar</span>
+                <span>$100.00 MXN</span>
+            </div>
+        </div>
+
+        <!-- Contenedor para botones de PayPal -->
+        <div id="paypal-button-container" style="margin-top: 20px; min-height: 150px;">
+            <div id="paypal-loading" style="text-align: center; color: #64748b; font-size: 0.9rem;">
+                <p>Cargando botones de pago...</p>
+                <small>(Si no aparecen, asegúrate de estar usando un servidor como XAMPP o Hosting)</small>
+                <br><br>
+                <button onclick="simulatePayment()"
+                    style="background: #0070ba; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    Omitir y simular pago (Demo)
+                </button>
+            </div>
+        </div>
+
+        <div class="secure-badge">
+            🔒 Pago cifrado procesado por PayPal
+        </div>
+    </div>
+
+    <!-- SDK de PayPal (Usando 'test' para sandbox) -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=MXN"></script>
+
+    <script>
+        // Capturar recordId de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const recordId = urlParams.get('recordId');
+
+        async function handlePaymentSuccess() {
+            if (recordId) {
+                try {
+                    await ABCD_DB.updatePaymentStatus(recordId);
+                } catch (e) {
+                    console.error("Error al actualizar pago en DB:", e);
+                }
+            }
+            window.location.href = `videoconsulta.html?recordId=${recordId}`;
+        }
+
+        function simulatePayment() {
+            alert('¡Simulación de pago exitosa! (Esto solo aparece en modo demo). Redirigiendo...');
+            handlePaymentSuccess();
+        }
+
+        paypal.Buttons({
+            onInit: function (data, actions) {
+                // Cuando PayPal carga, ocultamos el mensaje de error o carga
+                document.getElementById('paypal-loading').style.display = 'none';
+            },
+            createOrder: function (data, actions) {
+                // Configura los detalles de la transacción
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '100.00'
+                        },
+                        description: 'Consulta Médica Especializada - ABCD Médica'
+                    }]
+                });
+            },
+            onApprove: function (data, actions) {
+                // Captura los fondos de la transacción
+                return actions.order.capture().then(function (details) {
+                    alert('¡Pago completado por ' + details.payer.name.given_name + '! Redirigiendo a tu videoconsulta...');
+                    handlePaymentSuccess();
+                });
+            },
+            onError: function (err) {
+                console.error('Error en el pago:', err);
+                alert('Hubo un error al procesar el pago. Asegúrate de estar en un servidor real o usa el botón de simulación abajo.');
+            }
+        }).render('#paypal-button-container');
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
+</body>
+
+</html>

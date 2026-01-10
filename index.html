@@ -1,476 +1,843 @@
+<!--
+  _____   ____  __  __          _   _ 
+ |  __ \ / __ \|  \/  |   /\   | \ | |
+ | |__) | |  | | \  / |  /  \  |  \| |
+ |  _  /| |  | | |\/| | / /\ \ | . ` |
+ | | \ \| |__| | |  | |/ ____ \| |\  |
+ |_|  \_\\____/|_|  |_/_/    \_\_| \_|
+
+  __      ________ _           _____  _____ ____  
+  \ \    / /  ____| |   /\    / ____|/ ____/ __ \ 
+   \ \  / /| |__  | |  /  \  | (___ | |   | |  | |
+    \ \/ / |  __| | | / /\ \  \___ \| |   | |  | |
+     \  /  | |____| |/ ____ \ ____) | |___| |__| |
+      \/   |______|_/_/    \_\_____/ \_____\____/ 
+-->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>abcdmedica | Asesoramiento Médico Digital</title>
-    <meta name="description" content="Plataforma profesional de asesoramiento médico digital.">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <title>ABCD Médica | Salud Digital Premium</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           DESIGN SYSTEM & TOKENS (ABCD MÉDICA PREMIUM)
+           ========================================================================== */
+        :root {
+            --primary: #10b981;
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --secondary: #0ea5e9;
+            --accent: #f59e0b;
+            --bg-body: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --bg-card: #f8fafc;
+            --text-main: #0f172a;
+            --text-light: #64748b;
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-glass: rgba(15, 23, 42, 0.7);
+            --bg-card: #0f172a;
+            --text-main: #f8fafc;
+            --text-light: #94a3b8;
+            --header-bg: rgba(2, 6, 23, 0.8);
+            --card-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Components */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 10px 20px -5px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -5px var(--primary-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ================= Header ================= */
+        .main-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--header-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 12px 32px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--card-shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ================= Carousel Section ================= */
+        .carousel-section {
+            padding: 120px 0 0;
+            width: 100%;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .carousel-track {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Botones de navegación */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary);
+        }
+
+        #prevBtn {
+            left: 30px;
+        }
+
+        #nextBtn {
+            right: 30px;
+        }
+
+        /* Puntos indicadores */
+        .carousel-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 10px;
+        }
+
+        /* ================= Hero Section ================= */
+        .hero {
+            padding: 100px 0;
+            background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .hero-text h1 {
+            font-size: 2.0rem;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .hero-visual {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+
+        /* Hero Image Carousel */
+        .hero-image-carousel {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 480px;
+            margin-left: auto;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.2);
+            background: var(--bg-card);
+            transition: var(--transition);
+        }
+
+        .hero-image-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-img-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .hero-img-slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .hero-img-slide img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transform: scale(1.1);
+            transition: transform 6s linear;
+        }
+
+        .hero-img-slide.active img {
+            transform: scale(1);
+        }
+
+        /* ================= Sections ================= */
+        .section {
+            padding: 120px 0;
+        }
+
+        .bg-light {
+            background-color: var(--bg-card);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+        }
+
+        /* Cards */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--bg-body);
+            padding: 48px;
+            border-radius: 32px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-20px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 28px;
+            display: inline-block;
+        }
+
+        /* Process Image */
+        .process-image-container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto 0;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            background: var(--bg-card);
+            transition: var(--transition);
+        }
+
+        .process-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .process-image-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Theme Switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 100px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+            background: var(--bg-card);
+        }
+
+        .footer .logo span {
+            color: var(--primary);
+        }
+
+        /* Burger Menu */
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+
+        .burger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--text-main);
+            margin: 5px;
+            transition: 0.4s;
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-image-carousel {
+                height: 350px;
+                max-width: 380px;
+                border-radius: 24px;
+                margin-top: 20px;
+            }
+
+            .hero-visual {
+                display: block;
+                order: 2;
+                max-width: 450px;
+                margin: 0 auto;
+            }
+
+            .hero-text {
+                order: 1;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .burger {
+                display: block;
+            }
+        }
+    </style>
 </head>
+
 <body>
-
+    <!-- ================= HEADER ================= -->
     <header class="main-header">
-    <nav class="container nav-flex">
-    <div class="logo">
-        <img src="logo.png" alt="Logo" class="logo-img">
-        <strong>Innovacion <span> en Salud</span></strong>
-    </div>
-    
-    <ul class="nav-links">
-        <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#beneficios">Beneficios</a></li>
-        <a>🌗</a>
-        <li class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round"></div>
-            </label>
-        </li>
-    </ul>
-</nav>
+        <div class="container">
+            <nav class="nav-flex">
+                <a href="#" class="logo">
+                    <img src="logo.png" alt="Logo ABCD" class="logo-img">
+                    <strong>ABCD <span>Médica</span></strong>
+                </a>
 
-            <div class="burger" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#beneficios">Beneficios</a></li>
+                    <li><a href="auth.html" class="btn btn-outline"
+                            style="padding: 8px 15px; font-size: 0.9rem;">Iniciar
+                            Sesión</a></li>
+                    <li class="theme-switch-wrapper">
+                        <label class="theme-switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </li>
+                </ul>
+
+                <div class="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
     </header>
 
     <main>
+        <!-- ================= CAROUSEL PROMO ================= -->
+        <section class="carousel-section">
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <div class="carousel-slide active">
+                        <img src="images/ABCD-MED_Carrusel_1905x500px-A.jpg" alt="ABCD Médica Banner A">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/ABCD-MED_Carrusel_1905x500px-B.jpg" alt="ABCD Médica Banner B">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/ABCD-MED_Carrusel_1905x500px-C.jpg" alt="ABCD Médica Banner C">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="images/ABCD-MED_Carrusel_1905x500px-D.jpg" alt="ABCD Médica Banner D">
+                    </div>
+                </div>
+
+                <!-- Controles -->
+                <button class="carousel-btn" id="prevBtn">❮</button>
+                <button class="carousel-btn" id="nextBtn">❯</button>
+
+                <!-- Indicadores -->
+                <div class="carousel-dots" id="dotContainer"></div>
+            </div>
+        </section>
+
+        <!-- ================= HERO SECTION ================= -->
         <section id="inicio" class="hero">
             <div class="container hero-grid">
                 <div class="hero-text">
-                    <span class="badge">Atención 24/7</span>
-                    <h1>Asesoramiento médico digital a tu alcance</h1>
-                    <p>Conecta con profesionales de la salud de forma inmediata. Una experiencia humana potenciada por tecnología de vanguardia.</p>
+                    <span class="badge">
+                        <span
+                            style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 8px;"></span>
+                        Atención Médica 24/7
+                    </span>
+                    <h1>ABCD <br><span class="gradient-text">Atención básica de consulta y diagnóstico</span></h1>
+                    <p>
+                        Revolucionando la salud digital. Fusionamos la precisión de la <strong>Inteligencia
+                            Artificial</strong>
+                        con la calidez de la consulta humana para brindarte atención inmediata en cualquier lugar.
+                    </p>
                     <div class="hero-btns">
-                        <a href="#pasos" class="btn btn-primary">Saber más</a>
+                        <a href="auth.html" class="btn btn-primary">Iniciar Consulta Ahora</a>
+                        <a href="#beneficios" class="btn btn-outline">Explorar Beneficios</a>
                     </div>
                 </div>
-                
-                <div class="hero-avatar">
-                    <div id="avatar-container" class="avatar-box">
-                   <!-- borrar esta parte aqui va el codigo del avatar -->
-            <img src="doc.jpg" alt="doc" >
-<!-- hasta aqui -->
 
-
+                <div class="hero-visual">
+                    <div class="hero-image-carousel">
+                        <div class="hero-image-track">
+                            <div class="hero-img-slide active">
+                                <img src="images/doc.jpg" alt="Especialista ABCD 1">
+                            </div>
+                            <div class="hero-img-slide">
+                                <img src="images/doc2.jpg" alt="Especialista ABCD 2">
+                            </div>
+                            <div class="hero-img-slide">
+                                <img src="images/doc3.jpg" alt="Especialista ABCD 3">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+
+        <!-- BENEFICIOS -->
         <section id="beneficios" class="section bg-light">
             <div class="container">
                 <div class="section-title">
-                    <h2>Por qué elegirnos</h2>
-                    <p>Soluciones diseñadas para tu bienestar.</p>
+                    <h2>Por qué elegir ABCD Médica</h2>
+                    <p>Tecnología y profesionalismo para tu tranquilidad.</p>
                 </div>
-                
+
                 <div class="grid-3">
                     <div class="card">
                         <div class="card-icon">🩺</div>
                         <h3>Profesionales Certificados</h3>
-                        <p>Acceso a una red de médicos con amplia trayectoria y especialidades.</p>
+                        <p>Contamos con una red exclusiva de médicos especialistas listos para atenderte.</p>
                     </div>
+
                     <div class="card">
                         <div class="card-icon">⚡</div>
-                        <h3>Respuesta Inmediata</h3>
-                        <p>Olvídate de las salas de espera. Atención rápida desde cualquier lugar.</p>
+                        <h3>Respuesta en Tiempo Real</h3>
+                        <p>Nuestra IA y médicos trabajan en conjunto para darte una solución en minutos.</p>
                     </div>
+
                     <div class="card">
                         <div class="card-icon">🔒</div>
-                        <h3>Privacidad Total</h3>
-                        <p>Tus datos y consultas están protegidos bajo protocolos de alta seguridad.</p>
+                        <h3>Seguridad Profesional</h3>
+                        <p>Tus datos clínicos están encriptados bajo protocolos internacionales de seguridad.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- PASOS -->
         <section id="pasos" class="section">
             <div class="container">
                 <div class="section-title">
-                    <h2>Cómo funciona</h2>
+                    <h2>Tu Camino a la Salud en 5 Pasos</h2>
+                    <p>Un flujo diseñado para ser rápido, seguro y eficiente.</p>
                 </div>
-                
-                <div class="steps-container">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <h4>Inicia la consulta</h4>
-                        <p>Interactúa con nuestro asistente para clasificar tu necesidad.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <h4>Conecta</h4>
-                        <p>Se te asignará el especialista adecuado para tu caso particular.</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <h4>Recibe Diagnóstico</h4>
-                        <p>Obtén recomendaciones médicas y seguimiento digital.</p>
-                    </div>
+
+                <div class="process-image-container">
+                    <img src="images/abcdef.jpeg" alt="Proceso de Salud ABCD" class="process-image">
                 </div>
             </div>
         </section>
+
     </main>
 
-   
-
+    <!-- ================= FOOTER ================= -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 MedConsult Profesional. Todos los derechos reservados.</p>
-            <p class="legal">Aviso: Este sitio web proporciona asesoramiento informativo y no sustituye una emergencia médica presencial.</p>
+            <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+                <strong>ABCD <span>Médica</span></strong>
+            </div>
+            <p>&copy; 2026 ABCD Médica Platform. Todos los derechos reservados.</p>
+            <p class="legal">
+                Aviso: ABCD Médica es una plataforma de apoyo diagnóstico. En caso de emergencia crítica, acuda a un
+                centro hospitalario.
+            </p>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="main.js"></script>
+
+    <script>
+        // Header Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.main-header');
+            const navFlex = document.querySelector('.nav-flex');
+            if (window.scrollY > 50) {
+                navFlex.classList.add('glass');
+            } else {
+                navFlex.classList.remove('glass');
+            }
+        });
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .hero-text, .hero-visual, .carousel-section, .process-image-container').forEach(el => {
+            el.style.opacity = "0";
+            el.style.transform = "translateY(40px)";
+            el.style.transition = "all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)";
+            observer.observe(el);
+        });
+
+        // Carousel Logic
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dotsContainer = document.getElementById('dotContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentSlide = 0;
+
+        // Create dots
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (idx === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(idx));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlider() {
+            slides.forEach((s, idx) => {
+                s.classList.remove('active');
+                dots[idx].classList.remove('active');
+            });
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function goToSlide(n) {
+            currentSlide = n;
+            updateSlider();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Autoplay
+        let timer = setInterval(nextSlide, 5000);
+
+        document.querySelector('.carousel-container').addEventListener('mouseenter', () => clearInterval(timer));
+        document.querySelector('.carousel-container').addEventListener('mouseleave', () => timer = setInterval(nextSlide, 5000));
+
+        // Hero Image Carousel Logic
+        const heroSlides = document.querySelectorAll('.hero-img-slide');
+        let currentHeroSlide = 0;
+
+        function nextHeroSlide() {
+            if (heroSlides.length === 0) return;
+            heroSlides[currentHeroSlide].classList.remove('active');
+            currentHeroSlide = (currentHeroSlide + 1) % heroSlides.length;
+            heroSlides[currentHeroSlide].classList.add('active');
+        }
+
+        if (heroSlides.length > 1) {
+            setInterval(nextHeroSlide, 4500);
+        }
+    </script>
 </body>
+
 </html>
-
-
-<style>
-
-/* Variables de diseño */
-:root {
-    --primary: #10b981;
-    --primary-dark: #1e40af;
-    --secondary: #10b981;
-    --text-main: #334155;
-    --text-light: #64748b;
-    --bg-body: #ffffff;
-    --bg-card: #f8fafc;
-    --header-bg: rgba(255, 255, 255, 0.9);
-    --transition: all 0.3s ease;
-}
-
-/* Modo Oscuro */
-[data-theme="dark"] {
-    --bg-body: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f1f5f9;
-    --text-light: #94a3b8;
-    --header-bg: rgba(15, 23, 42, 0.9);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilos para el Switch de Modo Oscuro */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-}
-
-.theme-switch {
-    display: inline-block;
-    height: 24px;
-    position: relative;
-    width: 50px;
-}
-
-.theme-switch input { display: none; }
-
-.slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-    border-radius: 34px;
-}
-/* --- Arreglo de Navegación --- */
-.nav-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-img {
-    height: 40px; /* Ajusta el tamaño de tu imagen aquí */
-    width: auto;
-}
-
-/* --- Estilos del Switch --- */
-.theme-switch-wrapper { display: flex; align-items: center; }
-.theme-switch {
-    display: inline-block;
-    height: 24px;
-    position: relative;
-    width: 50px;
-}
-.theme-switch input { display: none; }
-.slider {
-    background-color: #ccc;
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    transition: .4s;
-    border-radius: 34px;
-}
-.slider:before {
-    background-color: #fff;
-    bottom: 4px; content: "";
-    height: 16px; left: 4px;
-    position: absolute; width: 16px;
-    transition: .4s; border-radius: 50%;
-}
-input:checked + .slider { background-color: #2563eb; }
-input:checked + .slider:before { transform: translateX(26px); }
-
-/* --- Colores Modo Oscuro --- */
-[data-theme="dark"] {
-    background-color: #0f172a;
-    color: #f1f5f9;
-}
-[data-theme="dark"] .main-header { background: rgba(15, 23, 42, 0.95); }
-[data-theme="dark"] .nav-links a { color: #f1f5f9; }
-
-.slider:before {
-    background-color: #fff;
-    bottom: 4px;
-    content: "";
-    height: 16px;
-    left: 4px;
-    position: absolute;
-    transition: .4s;
-    width: 16px;
-    border-radius: 50%;
-}
-
-input:checked + .slider { background-color: var(--secondary); }
-input:checked + .slider:before { transform: translateX(26px); }
-
-/* Colores Modo Oscuro */
-[data-theme="dark"] {
-    --bg-body: #0f172a;
-    --bg-card: #1e293b;
-    --text-main: #f1f5f9;
-    --text-light: #94a3b8;
-    --header-bg: rgba(15, 23, 42, 0.95);
-}
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    color: var(--text-main);
-    background-color: var(--bg-body);
-    transition: background-color 0.3s ease;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header */
-.main-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.nav-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    color: var(--primary);
-}
-
-.logo span {
-    color: var(--secondary);
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-    align-items: center;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-main);
-    font-weight: 500;
-    transition: var(--transition);
-}
-
-.nav-links a:hover {
-    color: var(--primary);
-}
-
-/* Hero */
-.hero {
-    padding: 160px 0 80px;
-}
-
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-}
-
-.badge {
-    background: #dbeafe;
-    color: var(--primary);
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.hero-text h1 {
-    font-size: 3.5rem;
-    margin: 20px 0;
-    line-height: 1.1;
-}
-
-.hero-text p {
-    font-size: 1.1rem;
-    color: var(--text-light);
-    margin-bottom: 30px;
-}
-
-.hero-btns {
-    display: flex;
-    gap: 15px;
-}
-
-/* Avatar Container */
-.avatar-box {
-    background: var(--bg-card);
-    border-radius: 20px;
-    height: 450px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #cbd5e1;
-    overflow: hidden;
-    position: relative;
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
-}
-
-/* Cards */
-.section { padding: 100px 0; }
-.bg-light { background-color: var(--bg-card); }
-
-.section-title {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.grid-3 {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: var(--bg-body);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    transition: var(--transition);
-}
-
-.card:hover { transform: translateY(-10px); }
-
-/* Buttons */
-.btn {
-    padding: 12px 30px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-block;
-    transition: var(--transition);
-}
-
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-dark); }
-.btn-outline { border: 2px solid var(--primary); color: var(--primary); }
-
-.float-btn {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--secondary);
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    z-index: 999;
-}
-
-/* Footer */
-.footer {
-    padding: 50px 0;
-    text-align: center;
-    border-top: 1px solid #e2e8f0;
-}
-
-.legal {
-    font-size: 0.8rem;
-    color: var(--text-light);
-    margin-top: 10px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .hero-grid { grid-template-columns: 1fr; text-align: center; }
-    .hero-text h1 { font-size: 2.5rem; }
-    .hero-btns { justify-content: center; }
-    .nav-links { display: none; } /* Implementar burger en JS */
-    .burger { display: block; cursor: pointer; }
-    .burger span {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background: var(--text-main);
-        margin: 5px;
-    }
-}
-
-
-
-
-</style>
