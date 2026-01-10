@@ -576,6 +576,73 @@
                 display: block;
             }
         }
+
+        /* ==========================================================================
+           NEW SECTIONS STYLES (LOCKED MODE SAFE)
+           ========================================================================== */
+        .faq-item {
+            background: var(--bg-body);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            border-left: 4px solid var(--primary);
+        }
+
+        .faq-question {
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            margin-top: 16px;
+            color: var(--text-light);
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .contact-info {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(14, 165, 233, 0.05));
+            border-radius: 32px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .mission-vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .values-list {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .value-tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -724,6 +791,124 @@
             </div>
         </section>
 
+        <!-- MÉDICOS / AFÍLIATE -->
+        <section id="medicos" class="section bg-light">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Médicos / Afíliate</h2>
+                    <p>Únete a la red que está transformando la salud digital.</p>
+                </div>
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>Beneficios de la Red</h3>
+                        <p style="margin-top: 15px; font-size: 0.95rem; color: var(--text-light);">
+                            Consultas remotas con herramientas de IA, gestión de agenda automatizada y reportes clínicos
+                            integrados.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Especialidades</h3>
+                        <p style="margin-top: 15px; font-size: 0.95rem; color: var(--text-light);">
+                            Medicina General, Psicología, Pediatría, Nutrición, Dermatología y Ginecología.
+                        </p>
+                    </div>
+                    <div class="card"
+                        style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <a href="login-medico.html" class="btn btn-primary">Afiliarme como médico</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIÉNES SOMOS -->
+        <section id="nosotros" class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Quiénes Somos</h2>
+                    <p>Comprometidos con la excelencia médica y el acceso universal.</p>
+                </div>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <p style="font-size: 1.1rem; color: var(--text-light);">
+                        ABCD Médica es una plataforma de salud digital premium que utiliza Inteligencia Artificial para
+                        optimizar el diagnóstico primario y conectar pacientes con especialistas certificados.
+                    </p>
+                    <div class="mission-vision-grid">
+                        <div class="card">
+                            <h4>Misión</h4>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Democratizar el acceso a salud de calidad
+                                mediante tecnologías de vanguardia y calidez humana.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Visión</h4>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Ser el ecosistema de salud digital líder en
+                                Latinoamérica, reconocido por su precisión y ética.</p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 40px;">
+                        <h4>Nuestros Valores</h4>
+                        <div class="values-list">
+                            <span class="value-tag">Ética Profesional</span>
+                            <span class="value-tag">Confidencialidad</span>
+                            <span class="value-tag">Evidencia Científica</span>
+                            <span class="value-tag">Innovación Constante</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="section bg-light">
+            <div class="container" style="max-width: 900px;">
+                <div class="section-title">
+                    <h2>Preguntas Frecuentes</h2>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">¿La IA sustituye a mi médico? <span>+</span></div>
+                        <div class="faq-answer">No. Nuestra IA es una herramienta de apoyo que agiliza la evaluación
+                            inicial, pero el diagnóstico final y tratamiento siempre son supervisados por médicos
+                            certificados.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">¿Los médicos son reales y certificados? <span>+</span></div>
+                        <div class="faq-answer">Absolutamente. Todos los profesionales en nuestra red pasan por un
+                            riguroso proceso de validación de cédulas y trayectoria profesional.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">¿Es segura mi información privada? <span>+</span></div>
+                        <div class="faq-answer">Sí. Cumplimos con estándares internacionales de protección de datos
+                            clínicos y encriptación de grado médico para tu total confidencialidad.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">¿Cuáles son los costos y formas de pago? <span>+</span></div>
+                        <div class="faq-answer">Ofrecemos diversos planes y consultas por evento. Aceptamos tarjetas de
+                            débito, crédito y transferencias electrónicas a través de nuestra pasarela de pagos segura.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section id="contacto" class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Contacto</h2>
+                    <p>Estamos aquí para escucharte y atenderte.</p>
+                </div>
+                <div class="contact-info">
+                    <h3 style="margin-bottom: 20px;">Atención Digital 24/7</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 10px;">📩 <a href="mailto:contacto@abcdmedica.com"
+                            style="color: var(--primary); text-decoration: none; font-weight: 700;">contacto@abcdmedica.com</a>
+                    </p>
+                    <p style="color: var(--text-light);">Para soporte técnico o dudas administrativas, escríbenos a
+                        cualquier hora.</p>
+                </div>
+            </div>
+        </section>
+
+
     </main>
 
     <!-- ================= FOOTER ================= -->
@@ -837,6 +1022,16 @@
         if (heroSlides.length > 1) {
             setInterval(nextHeroSlide, 4500);
         }
+
+        // FAQ Interactivity
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!isActive) item.classList.add('active');
+            });
+        });
+
     </script>
 </body>
 
